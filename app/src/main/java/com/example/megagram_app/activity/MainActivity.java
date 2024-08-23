@@ -1,7 +1,6 @@
-package com.example.megagram_app;
+package com.example.megagram_app.activity;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -10,17 +9,16 @@ import android.widget.ListView;
 import android.widget.ViewFlipper;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.megagram_app.R;
+import com.example.megagram_app.adapter.LoaiSpAdapter;
+import com.example.megagram_app.model.LoaiSp;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ListView listviewManhinhchinh;
     DrawerLayout drawerLayout;
+    LoaiSpAdapter loaiSpAdapter;
+    List<LoaiSp> mangloaisp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,5 +82,10 @@ public class MainActivity extends AppCompatActivity {
         recyleViewManhinhchinh =findViewById(R.id.recyleViewManhinhchinh);
         navigationView =findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawablelayout);
+        // Khoi tao list
+        mangloaisp = new ArrayList<>();
+        // khoi tao Adapter
+        loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(),mangloaisp);
+        listviewManhinhchinh.setAdapter(loaiSpAdapter);
     }
 }
