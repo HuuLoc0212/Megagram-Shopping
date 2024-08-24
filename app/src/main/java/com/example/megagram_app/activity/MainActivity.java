@@ -31,6 +31,7 @@ import com.example.megagram_app.retrofit.ApiBanHang;
 import com.example.megagram_app.retrofit.RetrofitClient;
 import com.google.android.material.navigation.NavigationView;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
@@ -78,9 +79,38 @@ public class MainActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        loaiSpModel ->{
-                            if (loaiSpModel.isSuccess()){
-                                Toast.makeText(getApplicationContext(),loaiSpModel.getResult().get(0).getTensanpham(), Toast.LENGTH_LONG);
+                       loaiSpModel -> {
+                           if (loaiSpModel.isSuccess()) {
+                               // Lấy danh sách sản phẩm từ phản hồi
+                               mangloaisp = loaiSpModel.getResult();
+
+                               // Cập nhật ListView với dữ liệu sản phẩm
+                               loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
+                               listviewManhinhchinh.setAdapter(loaiSpAdapter);
+
+                               // Hiển thị thông tin của sản phẩm đầu tiên nếu có
+                               if (!mangloaisp.isEmpty()) {
+                                   String tenSanPham = mangloaisp.get(0).getTensanpham();
+                                   Toast.makeText(getApplicationContext(), tenSanPham, Toast.LENGTH_LONG).show();
+                               }
+                           }
+
+
+//                           if (loaiSpModel.isSuccess()) {
+//                               Toast.makeText(getApplicationContext(), loaiSpModel.getResult().get(0).getTensanpham(), Toast.LENGTH_LONG).show();
+//                           }
+
+
+                       } // hàm xử lý onError găn ứng dụng của mình bị crash khi gặp lỗi,
+                        // đồng thời cung cấp phản hồi rõ ràng cho người dùng
+                        ,throwable -> {
+                            // Xử lý lỗi
+                            if (throwable instanceof SocketTimeoutException) {
+                                // Xử lý lỗi timeout
+                                Toast.makeText(getApplicationContext(), "Kết nối tới máy chủ bị timeout. Vui lòng thử lại.", Toast.LENGTH_LONG).show();
+                            } else {
+                                // Xử lý các loại lỗi khác
+                                Toast.makeText(getApplicationContext(), "Đã xảy ra lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                 ));
