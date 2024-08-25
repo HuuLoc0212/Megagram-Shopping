@@ -50,6 +50,7 @@
                     android:text="Sản Phẩm Mới Nhất"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyleViewManhinhchinh"
                     android:layout_marginLeft="5dp"
@@ -58,8 +59,7 @@
                     android:layout_height="match_parent">
 
                 </androidx.recyclerview.widget.RecyclerView>
-
-            </LinearLayout>
+                </LinearLayout>
 
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
