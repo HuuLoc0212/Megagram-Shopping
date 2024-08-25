@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     ApiBanHang apiBanHang;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Actionbar();
         ActinViewFlipper();
         if(iConnected(this)){
-            Toast.makeText(getApplicationContext(), "Bạn đã kết nối Internet", Toast.LENGTH_LONG).show();
+
             ActinViewFlipper();
             getLoaiSanPham();
         }
@@ -81,25 +84,11 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(
                        loaiSpModel -> {
                            if (loaiSpModel.isSuccess()) {
-                               // Lấy danh sách sản phẩm từ phản hồi
                                mangloaisp = loaiSpModel.getResult();
-
-                               // Cập nhật ListView với dữ liệu sản phẩm
-                               loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
-                               listviewManhinhchinh.setAdapter(loaiSpAdapter);
-
-                               // Hiển thị thông tin của sản phẩm đầu tiên nếu có
-                               if (!mangloaisp.isEmpty()) {
-                                   String tenSanPham = mangloaisp.get(0).getTensanpham();
-                                   Toast.makeText(getApplicationContext(), tenSanPham, Toast.LENGTH_LONG).show();
+                               // khoi tao adapter
+                               loaiSpAdapter =new LoaiSpAdapter((getApplicationContext()),mangloaisp);
+                               listviewManhinhchinh.setAdapter((loaiSpAdapter));
                                }
-                           }
-
-
-//                           if (loaiSpModel.isSuccess()) {
-//                               Toast.makeText(getApplicationContext(), loaiSpModel.getResult().get(0).getTensanpham(), Toast.LENGTH_LONG).show();
-//                           }
-
 
                        } // hàm xử lý onError găn ứng dụng của mình bị crash khi gặp lỗi,
                         // đồng thời cung cấp phản hồi rõ ràng cho người dùng
@@ -156,9 +145,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawablelayout);
         // Khoi tao list
         mangloaisp = new ArrayList<>();
-        // Khoi tao Adapter
-        loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
-        listviewManhinhchinh.setAdapter(loaiSpAdapter);
+
+
     }
 
     private boolean iConnected(Context context) {
@@ -173,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                             (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                                     networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
                 }
-            } else { // Các phiên bản Android cũ hơn
+            } else {
                 NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
                 NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                 return (wifi != null && wifi.isConnected()) ||
@@ -181,5 +169,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        compositeDisposable.clear();
+        super.onDestroy();
     }
 }
