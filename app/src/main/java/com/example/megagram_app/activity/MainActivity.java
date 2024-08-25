@@ -20,13 +20,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.megagram_app.R;
 import com.example.megagram_app.Utils.Utils;
 import com.example.megagram_app.adapter.LoaiSpAdapter;
+import com.example.megagram_app.adapter.SanPhamMoiAdapter;
 import com.example.megagram_app.model.LoaiSp;
+import com.example.megagram_app.model.SanPhamMoi;
+import com.example.megagram_app.model.SanPhamMoiModel;
 import com.example.megagram_app.retrofit.ApiBanHang;
 import com.example.megagram_app.retrofit.RetrofitClient;
 import com.google.android.material.navigation.NavigationView;
@@ -52,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     List<LoaiSp> mangloaisp;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiBanHang apiBanHang;
-
-
+    List<SanPhamMoi> mangSpMoi;
+    SanPhamMoiModel spAdapter;
 
 
 
@@ -71,10 +75,33 @@ public class MainActivity extends AppCompatActivity {
 
             ActinViewFlipper();
             getLoaiSanPham();
+            getSpMoi();
         }
         else {
             Toast.makeText(getApplicationContext(), "Bạn đã mất kết nối Internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getSpMoi() {
+        compositeDisposable.add(apiBanHang.getSpMoi()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        sanPhamMoiModel -> {
+                            if(sanPhamMoiModel.isSuccess()){
+                                mangSpMoi=sanPhamMoiModel.getResult();
+                                SanPhamMoiAdapter spAdapter;
+
+                                // Trong phương thức getSpMoi(), khởi tạo adapter với kiểu đúng
+                                spAdapter = new SanPhamMoiAdapter(getApplicationContext(), mangSpMoi);
+                                recyleViewManhinhchinh.setAdapter(spAdapter);
+                            }
+
+                        },throwable -> {
+                            Toast.makeText(getApplicationContext(),"Không kết nối được với sever"+throwable.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+
+                ));
     }
 
     private void getLoaiSanPham() {
@@ -141,10 +168,17 @@ public class MainActivity extends AppCompatActivity {
         viewFlipper = findViewById(R.id.viewflipper);
         listviewManhinhchinh = findViewById(R.id.listviewManhinhchinh);
         recyleViewManhinhchinh = findViewById(R.id.recyleViewManhinhchinh);
+
+        RecyclerView.LayoutManager layoutManager= new GridLayoutManager(this, 2);
+        recyleViewManhinhchinh.setLayoutManager(layoutManager);
+        recyleViewManhinhchinh.setHasFixedSize(true);
+
+
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawablelayout);
         // Khoi tao list
         mangloaisp = new ArrayList<>();
+        mangSpMoi = new ArrayList<>();
 
 
     }

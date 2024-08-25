@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.megagram_app.R;
 import com.example.megagram_app.model.SanPhamMoi;
 
+import java.text.DecimalFormat;
 import java.time.temporal.Temporal;
 import java.util.List;
 
@@ -38,6 +39,9 @@ public class SanPhamMoiAdapter extends RecyclerView.Adapter<SanPhamMoiAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SanPhamMoi sanPhamMoi= array.get(position);
         holder.txtten.setText(sanPhamMoi.getTensp());
+        // Gía
+//        DecimalFormat decimalFormat= new DecimalFormat("###,###,###");
+//        holder.txtgia.setText("Giá: "+decimalFormat.format(Double.parseDouble(sanPhamMoi.getGiasp()))+"Đ");
         holder.txtgia.setText(sanPhamMoi.getGiasp());
         Glide.with(context)
                 .load(sanPhamMoi.getHinhanh()) // sanPhamMoi.getHinhanh() nên trả về một URL hoặc đường dẫn hình ảnh hợp lệ
