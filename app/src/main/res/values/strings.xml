@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Megagram_App</string>
+    <string name="t_n_s_n_ph_m">Tên sản phẩm</string>
+    <string name="gi_700000">Giá: 700000Đ</string>
+    <string name="th_m_v_o_gi_h_ng">Thêm vào giỏ hàng</string>
+    <string name="m_t_chi_ti_t_s_n_ph_m">Mô tả chi tiết sản phẩm</string>
+    <string name="chi_ti_t_s_n_ph_m">Chi Tiết Sản Phẩm</string>
+    <string name="m_t">Mô tả</string>
+    <string name="trang_ch_nh">Trang Chính</string>
+    <string name="s_n_ph_m_m_i_nh_t">Sản Phẩm Mới Nhất</string>
+    <string name="i_n_tho_i">Điện Thoại</string>
 </resources>

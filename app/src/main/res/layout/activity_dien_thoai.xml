@@ -8,8 +8,8 @@
     tools:context=".activity.DienThoaiActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        app:title="Điện Thoại"
-        android:background="#ADADAD"
+        app:title="@string/i_n_tho_i"
+        android:background="#D5D1D1"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">

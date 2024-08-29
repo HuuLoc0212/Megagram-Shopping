@@ -1,6 +1,8 @@
 package com.example.megagram_app.model;
 
-public class SanPhamMoi {
+import java.io.Serializable;
+
+public class SanPhamMoi implements Serializable {
     int id;
     String tensp;
     String hinhanh;
