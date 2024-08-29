@@ -1,6 +1,7 @@
 package com.example.megagram_app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.megagram_app.Interface.ItemClickListener;
 import com.example.megagram_app.R;
+import com.example.megagram_app.activity.ChiTietActivity;
 import com.example.megagram_app.model.SanPhamMoi;
 
 import java.util.List;
@@ -66,6 +69,18 @@ public class DienThoaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             myViewHolder.idsp.setText(sanPham.getId()+" ");
             myViewHolder.mota.setText(sanPham.getMota());
             Glide.with(context).load(sanPham.getHinhanh()).into(myViewHolder.hinhanh);
+            myViewHolder.setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onClick(View view, int pos, boolean isLongClick) {
+                    if (!isLongClick){
+                        //Click
+                        Intent intent= new Intent(context, ChiTietActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                }
+            });
+
         }else {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.progressBar.setIndeterminate(true);
@@ -87,9 +102,10 @@ public class DienThoaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
     // neu du lieu co data thi add nay len de hien thi data
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tensp, giasp, mota,idsp;
         ImageView hinhanh;
+        private ItemClickListener itemClickListener;
             public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tensp=itemView.findViewById(R.id.itemdt_ten);
@@ -97,6 +113,16 @@ public class DienThoaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mota=itemView.findViewById(R.id.itemdt_mota);
             hinhanh=itemView.findViewById(R.id.itemdt_image);
             idsp=itemView.findViewById(R.id.itemdt_idsp);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            itemClickListener.onClick(view, getAdapterPosition(), false);
         }
     }
 }
